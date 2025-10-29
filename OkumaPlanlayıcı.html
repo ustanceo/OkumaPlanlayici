@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Kitap Takip">
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIktpdGFwIFRha2lwIiwKICAic2hvcnRfbmFtZSI6ICJLaXRhcCIsCiAgInN0YXJ0X3VybCI6ICIuLyIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzFhMWEyZSIsCiAgInRoZW1lX2NvbG9yIjogIiMxYTFhMmUiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWwsJTNDc3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgd2lkdGg9JzE5MicgaGVpZ2h0PScxOTInJTNFJTNDcmVjdCB3aWR0aD0nMTkyJyBoZWlnaHQ9JzE5MicgZmlsbD0nJTIzMWExYTJlJy8lM0UlM0N0ZXh0IHg9JzUwJTI1JyB5PSc1MCUyNScgZm9udC1zaXplPSc5MCcgdGV4dC1hbmNob3I9J21pZGRsZScgZHk9Jy4zZW0nJTNFJUYwJTlGJTkzJTlBJTNDL3RleHQlM0UlM0Mvc3ZnJTNFIiwKICAgICAgInNpemVzIjogIjE5MngxOTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9zdmcreG1sIgogICAgfSwKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWwsJTNDc3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgd2lkdGg9JzUxMicgaGVpZ2h0PSc1MTInJTNFJTNDcmVjdCB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMicgZmlsbD0nJTIzMWExYTJlJy8lM0UlM0N0ZXh0IHg9JzUwJTI1JyB5PSc1MCUyNScgZm9udC1zaXplPScyNDAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGR5PScuM2VtJyUzRSVGMCU5RiU5MyU5QSUzQy90ZXh0JTNFJTNDL3N2ZyUzRSIsCiAgICAgICJzaXplcyI6ICI1MTJ4NTEyIiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIKICAgIH0KICBdCn0=">
+    <title>Kitap Takip</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            padding: 20px;
+            padding-bottom: 40px;
+            color: #e4e4e7;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: #f1f5f9;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .card {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 12px;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(129, 140, 248, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 10px rgba(129, 140, 248, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(71, 85, 105, 0.5);
+            color: #e2e8f0;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+
+        .btn-secondary:active {
+            background: rgba(71, 85, 105, 0.7);
+        }
+
+        .book-item {
+            background: rgba(51, 65, 85, 0.5);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            padding: 18px;
+            border-radius: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .book-item:active {
+            background: rgba(51, 65, 85, 0.7);
+            transform: scale(0.98);
+            border-color: rgba(129, 140, 248, 0.3);
+        }
+
+        .book-title {
+            font-weight: 600;
+            font-size: 17px;
+            margin-bottom: 10px;
+            color: #f1f5f9;
+        }
+
+        .book-progress {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 10px;
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid rgba(148, 163, 184, 0.1);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+            transition: width 0.3s;
+            box-shadow: 0 0 10px rgba(129, 140, 248, 0.5);
+        }
+
+        .progress-text {
+            font-size: 14px;
+            font-weight: 700;
+            color: #818cf8;
+            min-width: 45px;
+        }
+
+        .book-info {
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #cbd5e1;
+            font-size: 14px;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid rgba(148, 163, 184, 0.2);
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.3s;
+            background: rgba(30, 41, 59, 0.6);
+            color: #e2e8f0;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #818cf8;
+            background: rgba(30, 41, 59, 0.8);
+            box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.1);
+        }
+
+        .input-group input::placeholder {
+            color: #64748b;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .back-btn {
+            background: rgba(71, 85, 105, 0.5);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            color: #e2e8f0;
+            font-size: 20px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            padding: 10px 16px;
+            border-radius: 12px;
+            transition: all 0.3s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .back-btn:active {
+            background: rgba(71, 85, 105, 0.7);
+            transform: scale(0.95);
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #64748b;
+            padding: 50px 20px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(129, 140, 248, 0.15) 0%, rgba(192, 132, 252, 0.15) 100%);
+            border: 1px solid rgba(129, 140, 248, 0.2);
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .radio-option {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid rgba(148, 163, 184, 0.2);
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 14px;
+            color: #94a3b8;
+            background: rgba(30, 41, 59, 0.4);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .radio-option.active {
+            border-color: #818cf8;
+            background: linear-gradient(135deg, rgba(129, 140, 248, 0.2) 0%, rgba(192, 132, 252, 0.2) 100%);
+            color: #818cf8;
+        }
+
+        .completed-book {
+            background: rgba(51, 65, 85, 0.5);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 18px;
+            border-radius: 16px;
+            margin-bottom: 12px;
+        }
+
+        .completed-book .book-title {
+            color: #34d399;
+        }
+
+        .info-text {
+            margin-top: 8px;
+            font-size: 13px;
+            color: #94a3b8;
+            padding: 8px 12px;
+            background: rgba(51, 65, 85, 0.4);
+            border-radius: 8px;
+            border-left: 3px solid #818cf8;
+        }
+
+        .btn-complete {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-complete:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 10px rgba(16, 185, 129, 0.4);
+        }
+
+        h2 {
+            font-size: 18px;
+            margin-bottom: 16px;
+            color: #cbd5e1;
+        }
+
+        .install-prompt {
+            background: linear-gradient(135deg, rgba(129, 140, 248, 0.2) 0%, rgba(192, 132, 252, 0.2) 100%);
+            border: 1px solid rgba(129, 140, 248, 0.3);
+            padding: 16px;
+            border-radius: 14px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .install-prompt p {
+            color: #cbd5e1;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .install-prompt button {
+            background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- Ana Sayfa -->
+    <div id="homePage" class="container">
+        <div class="header">
+            <h1>📚 Kitap Takip</h1>
+        </div>
+
+        <!-- PWA Yükleme Uyarısı -->
+        <div id="installPrompt" class="install-prompt hidden">
+            <p>📱 Bu uygulamayı ana ekranınıza ekleyin!</p>
+            <button onclick="promptInstall()">Ana Ekrana Ekle</button>
+        </div>
+        
+        <div class="card">
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="activeCount">0</div>
+                    <div class="stat-label">Devam Eden</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="completedCount">0</div>
+                    <div class="stat-label">Tamamlanan</div>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="showAddBookPage()">+ Yeni Kitap Ekle</button>
+            <button class="btn btn-secondary" onclick="showCompletedPage()">Tamamlanan Kitaplar</button>
+        </div>
+
+        <div class="card">
+            <h2>Devam Eden Kitaplar</h2>
+            <div id="activeBooksList"></div>
+        </div>
+    </div>
+
+    <!-- Kitap Ekleme Sayfası -->
+    <div id="addBookPage" class="container hidden">
+        <button class="back-btn" onclick="showHomePage()">← Geri</button>
+        
+        <div class="header">
+            <h1>Yeni Kitap Ekle</h1>
+        </div>
+
+        <div class="card">
+            <div class="input-group">
+                <label>Kitap Adı</label>
+                <input type="text" id="bookName" placeholder="Örn: Suç ve Ceza">
+            </div>
+
+            <div class="input-group">
+                <label>Toplam Sayfa Sayısı</label>
+                <input type="number" id="totalPages" placeholder="Örn: 350">
+            </div>
+
+            <div class="input-group">
+                <label>Şu anda kaç sayfadasınız?</label>
+                <input type="number" id="currentPage" placeholder="Örn: 0" value="0">
+            </div>
+
+            <div class="input-group">
+                <label>Hedef Türü</label>
+                <div class="radio-group">
+                    <div class="radio-option active" onclick="selectGoalType('daily')">Günlük Sayfa</div>
+                    <div class="radio-option" onclick="selectGoalType('date')">Bitiş Tarihi</div>
+                </div>
+            </div>
+
+            <div class="input-group" id="dailyGoalGroup">
+                <label>Günde Kaç Sayfa Okumak İstiyorsunuz?</label>
+                <input type="number" id="dailyPages" placeholder="Örn: 30">
+                <p id="estimatedDate" class="info-text" style="display: none;"></p>
+            </div>
+
+            <div class="input-group hidden" id="targetDateGroup">
+                <label>Hangi Tarihe Kadar Bitirmek İstiyorsunuz?</label>
+                <input type="date" id="targetDate">
+                <p id="requiredPages" class="info-text" style="display: none;"></p>
+            </div>
+
+            <button class="btn btn-primary" onclick="addBook()">Kitabı Kaydet</button>
+        </div>
+    </div>
+
+    <!-- Kitap Detay Sayfası -->
+    <div id="bookDetailPage" class="container hidden">
+        <button class="back-btn" onclick="showHomePage()">← Geri</button>
+        
+        <div class="header">
+            <h1 id="detailBookName"></h1>
+        </div>
+
+        <div class="card">
+            <div class="book-progress" style="margin-bottom: 20px;">
+                <div class="progress-bar" style="flex: 1;">
+                    <div class="progress-fill" id="detailProgressFill"></div>
+                </div>
+                <div class="progress-text" id="detailProgressText"></div>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <p id="detailCurrentPage" style="color: #cbd5e1; margin-bottom: 8px; font-size: 15px;"></p>
+                <p id="detailDailyGoal" class="info-text"></p>
+            </div>
+
+            <div class="input-group">
+                <label>Bugün Kaç Sayfa Okudunuz?</label>
+                <input type="number" id="pagesRead" placeholder="Örn: 25">
+            </div>
+
+            <button class="btn btn-primary" onclick="updateProgress()">İlerlemeyi Güncelle</button>
+            <button class="btn btn-complete" onclick="markAsCompleted()">✓ Kitabı Tamamladım</button>
+        </div>
+    </div>
+
+    <!-- Tamamlanan Kitaplar Sayfası -->
+    <div id="completedPage" class="container hidden">
+        <button class="back-btn" onclick="showHomePage()">← Geri</button>
+        
+        <div class="header">
+            <h1>Tamamlanan Kitaplar</h1>
+        </div>
+
+        <div class="card">
+            <button class="btn btn-primary" onclick="showAddCompletedPage()">+ Tamamlanmış Kitap Ekle</button>
+        </div>
+
+        <div class="card">
+            <div id="completedBooksList"></div>
+        </div>
+    </div>
+
+    <!-- Tamamlanmış Kitap Ekleme Sayfası -->
+    <div id="addCompletedPage" class="container hidden">
+        <button class="back-btn" onclick="showCompletedPage()">← Geri</button>
+        
+        <div class="header">
+            <h1>Tamamlanmış Kitap Ekle</h1>
+        </div>
+
+        <div class="card">
+            <div class="input-group">
+                <label>Kitap Adı</label>
+                <input type="text" id="completedBookName" placeholder="Örn: 1984">
+            </div>
+
+            <div class="input-group">
+                <label>Tamamlama Tarihi (İsteğe Bağlı)</label>
+                <input type="date" id="completionDate">
+            </div>
+
+            <button class="btn btn-primary" onclick="addCompletedBook()">Kitabı Kaydet</button>
+        </div>
+    </div>
+
+    <script>
+        // PWA Install Prompt
+        let deferredPrompt;
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installPrompt').classList.remove('hidden');
+        });
+
+        function promptInstall() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        document.getElementById('installPrompt').classList.add('hidden');
+                    }
+                    deferredPrompt = null;
+                });
+            }
+        }
+
+        // Sayfa yönetimi fonksiyonları
+        function showHomePage() {
+            hideAllPages();
+            document.getElementById('homePage').classList.remove('hidden');
+            loadData();
+        }
+
+        function showAddBookPage() {
+            hideAllPages();
+            document.getElementById('addBookPage').classList.remove('hidden');
+            document.getElementById('bookName').value = '';
+            document.getElementById('totalPages').value = '';
+            document.getElementById('currentPage').value = '0';
+            document.getElementById('dailyPages').value = '';
+            document.getElementById('targetDate').value = '';
+            document.getElementById('estimatedDate').style.display = 'none';
+            document.getElementById('requiredPages').style.display = 'none';
+            selectGoalType('daily');
+        }
+
+        function showBookDetail(bookId) {
+            hideAllPages();
+            document.getElementById('bookDetailPage').classList.remove('hidden');
+            currentBookId = bookId;
+            const book = activeBooks.find(b => b.id === bookId);
+            
+            document.getElementById('detailBookName').textContent = book.name;
+            const progress = Math.round((book.currentPage / book.totalPages) * 100);
+            document.getElementById('detailProgressFill').style.width = progress + '%';
+            document.getElementById('detailProgressText').textContent = progress + '%';
+            document.getElementById('detailCurrentPage').textContent = 
+                `Sayfa ${book.currentPage} / ${book.totalPages}`;
+            
+            if (book.dailyGoal) {
+                const remainingPages = book.totalPages - book.currentPage;
+                const daysNeeded = Math.ceil(remainingPages / book.dailyGoal);
+                document.getElementById('detailDailyGoal').textContent = 
+                    `📖 Günlük hedef: ${book.dailyGoal} sayfa • Tahmini ${daysNeeded} gün`;
+            } else if (book.targetDate) {
+                const today = new Date();
+                const target = new Date(book.targetDate);
+                const daysLeft = Math.ceil((target - today) / (1000 * 60 * 60 * 24));
+                const remainingPages = book.totalPages - book.currentPage;
+                const dailyNeeded = Math.ceil(remainingPages / Math.max(1, daysLeft));
+                document.getElementById('detailDailyGoal').textContent = 
+                    `🎯 Hedef: ${new Date(book.targetDate).toLocaleDateString('tr-TR')} • Günde ${dailyNeeded} sayfa okumalısınız`;
+            }
+            
+            document.getElementById('pagesRead').value = '';
+        }
+
+        function showCompletedPage() {
+            hideAllPages();
+            document.getElementById('completedPage').classList.remove('hidden');
+            loadCompletedBooks();
+        }
+
+        function showAddCompletedPage() {
+            hideAllPages();
+            document.getElementById('addCompletedPage').classList.remove('hidden');
+            document.getElementById('completedBookName').value = '';
+            document.getElementById('completionDate').value = '';
+        }
+
+        function hideAllPages() {
+            document.querySelectorAll('.container').forEach(page => {
+                page.classList.add('hidden');
+            });
+        }
+
+        // Hedef türü seçimi
+        let goalType = 'daily';
+        function selectGoalType(type) {
+            goalType = type;
+            document.querySelectorAll('.radio-option').forEach(opt => {
+                opt.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            if (type === 'daily') {
+                document.getElementById('dailyGoalGroup').classList.remove('hidden');
+                document.getElementById('targetDateGroup').classList.add('hidden');
+            } else {
+                document.getElementById('dailyGoalGroup').classList.add('hidden');
+                document.getElementById('targetDateGroup').classList.remove('hidden');
+            }
+        }
+
+        // Tahmini tarih hesaplama
+        document.getElementById('dailyPages')?.addEventListener('input', function() {
+            const totalPages = parseInt(document.getElementById('totalPages').value) || 0;
+            const currentPage = parseInt(document.getElementById('currentPage').value) || 0;
+            const dailyPages = parseInt(this.value) || 0;
+            
+            const estimatedEl = document.getElementById('estimatedDate');
+            if (dailyPages > 0 && totalPages > 0) {
+                const remainingPages = totalPages - currentPage;
+                const daysNeeded = Math.ceil(remainingPages / dailyPages);
+                const estimatedDate = new Date();
+                estimatedDate.setDate(estimatedDate.getDate() + daysNeeded);
+                
+                estimatedEl.textContent = 
+                    `📅 Tahmini bitiş: ${estimatedDate.toLocaleDateString('tr-TR')} (${daysNeeded} gün)`;
+                estimatedEl.style.display = 'block';
+            } else {
+                estimatedEl.style.display = 'none';
+            }
+        });
+
+        // Gerekli günlük sayfa hesaplama
+        document.getElementById('targetDate')?.addEventListener('input', function() {
+            const totalPages = parseInt(document.getElementById('totalPages').value) || 0;
+            const currentPage = parseInt(document.getElementById('currentPage').value) || 0;
+            const targetDate = new Date(this.value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            const requiredEl = document.getElementById('requiredPages');
+            if (this.value && totalPages > 0) {
+                const daysAvailable = Math.ceil((targetDate - today) / (1000 * 60 * 60 * 24));
+                const remainingPages = totalPages - currentPage;
+                const requiredDaily = Math.ceil(remainingPages / Math.max(1, daysAvailable));
+                
+                requiredEl.textContent = 
+                    `📖 Günde ${requiredDaily} sayfa okumalısınız (${daysAvailable} gün kaldı)`;
+                requiredEl.style.display = 'block';
+            } else {
+                requiredEl.style.display = 'none';
+            }
+        });
+
+        // Veri yönetimi
+        let activeBooks = [];
+        let completedBooks = [];
+        let currentBookId = null;
+
+        // Verileri localStorage'dan yükle
+        function loadData() {
+            try {
+                const savedActiveBooks = localStorage.getItem('activeBooks');
+                const savedCompletedBooks = localStorage.getItem('completedBooks');
+                
+                activeBooks = savedActiveBooks ? JSON.parse(savedActiveBooks) : [];
+                completedBooks = savedCompletedBooks ? JSON.parse(savedCompletedBooks) : [];
+            } catch (error) {
+                console.error('Veri yükleme hatası:', error);
+                activeBooks = [];
+                completedBooks = [];
+            }
+            
+            renderActiveBooks();
+            updateStats();
+        }
+
+        // Verileri kaydet
+        function saveData() {
+            try {
+                localStorage.setItem('activeBooks', JSON.stringify(activeBooks));
+                localStorage.setItem('completedBooks', JSON.stringify(completedBooks));
+            } catch (error) {
+                console.error('Veri kaydetme hatası:', error);
+                alert('Veriler kaydedilirken bir hata oluştu! Lütfen tarayıcınızın gizli modu açık olmadığından emin olun.');
+            }
+        }
+
+        // İstatistikleri güncelle
+        function updateStats() {
+            document.getElementById('activeCount').textContent = activeBooks.length;
+            document.getElementById('completedCount').textContent = completedBooks.length;
+        }
+
+        // Aktif kitapları listele
+        function renderActiveBooks() {
+            const container = document.getElementById('activeBooksList');
+            
+            if (activeBooks.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <p>📚 Henüz kitap eklemediniz</p>
+                        <p style="margin-top: 8px; font-size: 13px;">Yeni kitap ekleyerek başlayın!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = activeBooks.map(book => {
+                const progress = Math.round((book.currentPage / book.totalPages) * 100);
+                return `
+                    <div class="book-item" onclick="showBookDetail('${book.id}')">
+                        <div class="book-title">${book.name}</div>
+                        <div class="book-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${progress}%"></div>
+                            </div>
+                            <div class="progress-text">${progress}%</div>
+                        </div>
+                        <div class="book-info">
+                            ${book.currentPage} / ${book.totalPages} sayfa
+                            ${book.dailyGoal ? ` • Günlük: ${book.dailyGoal} sayfa` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Tamamlanan kitapları listele
+        function loadCompletedBooks() {
+            const container = document.getElementById('completedBooksList');
+            
+            if (completedBooks.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <p>🎉 Henüz tamamlanmış kitap yok</p>
+                        <p style="margin-top: 8px; font-size: 13px;">İlk kitabınızı bitirdiğinizde buraya eklenecek!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = completedBooks.map(book => `
+                <div class="completed-book">
+                    <div class="book-title">✓ ${book.name}</div>
+                    ${book.completionDate ? 
+                        `<div class="book-info">Tamamlanma: ${new Date(book.completionDate).toLocaleDateString('tr-TR')}</div>` 
+                        : ''}
+                </div>
+            `).join('');
+        }
+
+        // Yeni kitap ekle
+        function addBook() {
+            const name = document.getElementById('bookName').value.trim();
+            const totalPages = parseInt(document.getElementById('totalPages').value);
+            const currentPage = parseInt(document.getElementById('currentPage').value) || 0;
+            
+            if (!name || !totalPages) {
+                alert('Lütfen kitap adı ve toplam sayfa sayısını girin!');
+                return;
+            }
+
+            if (totalPages <= 0) {
+                alert('Toplam sayfa sayısı 0\'dan büyük olmalıdır!');
+                return;
+            }
+
+            if (currentPage < 0 || currentPage > totalPages) {
+                alert('Geçersiz sayfa numarası!');
+                return;
+            }
+            
+            const book = {
+                id: Date.now().toString(),
+                name: name,
+                totalPages: totalPages,
+                currentPage: currentPage
+            };
+            
+            if (goalType === 'daily') {
+                const dailyPages = parseInt(document.getElementById('dailyPages').value);
+                if (!dailyPages || dailyPages <= 0) {
+                    alert('Lütfen günlük sayfa hedefini girin!');
+                    return;
+                }
+                book.dailyGoal = dailyPages;
+            } else {
+                const targetDate = document.getElementById('targetDate').value;
+                if (!targetDate) {
+                    alert('Lütfen hedef tarihi seçin!');
+                    return;
+                }
+                book.targetDate = targetDate;
+            }
+            
+            activeBooks.push(book);
+            saveData();
+            showHomePage();
+        }
+
+        // İlerleme güncelle
+        function updateProgress() {
+            const pagesRead = parseInt(document.getElementById('pagesRead').value);
+            
+            if (!pagesRead || pagesRead <= 0) {
+                alert('Lütfen okuduğunuz sayfa sayısını girin!');
+                return;
+            }
+            
+            const book = activeBooks.find(b => b.id === currentBookId);
+            book.currentPage += pagesRead;
+            
+            if (book.currentPage >= book.totalPages) {
+                book.currentPage = book.totalPages;
+                alert('🎉 Tebrikler! Kitabı tamamladınız!');
+                markAsCompleted();
+                return;
+            }
+            
+            saveData();
+            showBookDetail(currentBookId);
+        }
+
+        // Kitabı tamamlanmış olarak işaretle
+        function markAsCompleted() {
+            const book = activeBooks.find(b => b.id === currentBookId);
+            
+            completedBooks.push({
+                id: Date.now().toString(),
+                name: book.name,
+                completionDate: new Date().toISOString().split('T')[0]
+            });
+            
+            activeBooks = activeBooks.filter(b => b.id !== currentBookId);
+            saveData();
+            showHomePage();
+        }
+
+        // Tamamlanmış kitap ekle
+        function addCompletedBook() {
+            const name = document.getElementById('completedBookName').value.trim();
+            
+            if (!name) {
+                alert('Lütfen kitap adını girin!');
+                return;
+            }
+            
+            const book = {
+                id: Date.now().toString(),
+                name: name,
+                completionDate: document.getElementById('completionDate').value || null
+            };
+            
+            completedBooks.push(book);
+            saveData();
+            showCompletedPage();
+        }
+
+        // Sayfa yüklendiğinde verileri yükle
+        window.addEventListener('load', () => {
+            loadData();
+        });
+
+        // Service Worker kaydet (Offline çalışma için)
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgZnVuY3Rpb24oZXZlbnQpIHsKICBzZWxmLnNraXBXYWl0aW5nKCk7Cn0pOwoKc2VsZi5hZGRFdmVudExpc3RlbmVyKCdhY3RpdmF0ZScsIGZ1bmN0aW9uKGV2ZW50KSB7CiAgcmV0dXJuIHNlbGYuY2xpZW50cy5jbGFpbSgpOwp9KTsKCnNlbGYuYWRkRXZlbnRMaXN0ZW5lcignZmV0Y2gnLCBmdW5jdGlvbihldmVudCkgewogIGV2ZW50LnJlc3BvbmRXaXRoKAogICAgZmV0Y2goZXZlbnQucmVxdWVzdCkuY2F0Y2goZnVuY3Rpb24oKSB7CiAgICAgIHJldHVybiBjYWNoZXMubWF0Y2goZXZlbnQucmVxdWVzdCk7CiAgICB9KQogICk7Cn0pOw==')
+                .then(() => console.log('Service Worker kaydedildi'))
+                .catch(() => console.log('Service Worker kaydedilemedi'));
+        }
+    </script>
+</body>
+</html>
